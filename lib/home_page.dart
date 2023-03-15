@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
   bool isTTS = false;
   final SpeechToText _speechToText = SpeechToText();
   bool isDark = false;
+  bool _speechEnabled = false;
 
   @override
   void initState() {
@@ -51,6 +52,17 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _initSpeech() async {
+    _speechEnabled = await _speechToText.initialize();
+    setState(() {});
+  }
+
+  void _startListening() async {
+    await _speechToText.listen(onResult: _onSpeechResult);
+    setState(() {});
+  }
+
+  void _stopListening() async {
+    await _speechToText.stop();
     setState(() {});
   }
 
@@ -59,12 +71,8 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         textEditingController.text = result.recognizedWords;
       });
+      performAction();
     }
-  }
-
-  void _startListening() async {
-    await _speechToText.listen(onResult: _onSpeechResult);
-    setState(() {});
   }
 
   @override
@@ -142,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                       child: Card(
                         color: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.only(left: 14.0),
