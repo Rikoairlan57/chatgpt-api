@@ -1,5 +1,6 @@
 // ignore_for_file: implementation_imports, unused_local_variable
 
+import 'package:chatgpt/api_key.dart';
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -43,7 +44,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     openAI = ChatGPT.instance.builder(
-      "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",
+      chatGpt,
       baseOption: HttpSetup(receiveTimeout: 16000),
     );
 
@@ -247,9 +248,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void modelDataList() async {
-    final model = await ChatGPT.instance
-        .builder("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")
-        .listModel();
+    final model = await ChatGPT.instance.builder(chatGpt).listModel();
     for (ModelData model in model.data) {}
   }
 }
